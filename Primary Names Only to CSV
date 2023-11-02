@@ -1,0 +1,24 @@
+import urllib.request
+import ssl
+import certifi
+
+# Set up a custom SSL context using certifi
+context = ssl.create_default_context(cafile=certifi.where())
+
+# URL of the CSV file
+csv_url = "https://www.treasury.gov/ofac/downloads/sdn.csv"
+
+try:
+    # Open the URL using the configured SSL context
+    response = urllib.request.urlopen(csv_url, context=context)
+
+    # Read the CSV data from the response
+    csv_data = response.read()
+
+    # Save the data to a local CSV file
+    with open("downloaded_data.csv", "wb") as csv_file:
+        csv_file.write(csv_data)
+
+    print("downloaded_data.csv")
+except urllib.error.URLError as e:
+    print(f"Error: {e}")
