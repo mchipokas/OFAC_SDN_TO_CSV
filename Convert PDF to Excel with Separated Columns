@@ -29,7 +29,7 @@ tables = tabula.read_pdf(pdf_file, pages=pages, multiple_tables=True)
 selected_table = tables[0]
 
 # Convert the selected table to a CSV file
-csv_file = "/Users/mchipokas/EXcel to PDF Project/Converted_Data.csv"
+csv_file = "Converted_Data.csv"
 selected_table.to_csv(csv_file, index=False, header=True)
 
 print(f"Data has been saved to {csv_file}")
