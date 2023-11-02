@@ -1,0 +1,35 @@
+import tabula
+import pandas as pd
+import urllib.request
+import ssl
+import certifi
+import io
+
+# Set up a custom SSL context using certifi
+context = ssl.create_default_context(cafile=certifi.where())
+
+# URL of the PDF file
+pdf_url = "https://www.treasury.gov/ofac/downloads/sdnnew23.pdf"
+
+# Specify the page(s) you want to extract (can be a single page or a list of page numbers)
+# For the entire document, you can use 'pages="all"'
+pages = "all"  # Change this to the page number you want to extract
+
+# Fetch the PDF content using the custom SSL context
+with urllib.request.urlopen(pdf_url, context=context) as response:
+    pdf_content = response.read()
+
+# Convert the PDF content to a file-like object
+pdf_file = io.BytesIO(pdf_content)
+
+# Extract tables from the PDF and save as a list of DataFrames
+tables = tabula.read_pdf(pdf_file, pages=pages, multiple_tables=True)
+
+# Choose the table you want by index (replace '0' with the correct index)
+selected_table = tables[0]
+
+# Convert the selected table to a CSV file
+csv_file = "/Users/mchipokas/EXcel to PDF Project/Converted_Data.csv"
+selected_table.to_csv(csv_file, index=False, header=True)
+
+print(f"Data has been saved to {csv_file}")
